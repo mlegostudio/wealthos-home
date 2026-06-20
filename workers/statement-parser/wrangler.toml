@@ -1,0 +1,40 @@
+# WealthOS Home - Statement Parser Worker
+# Cloudflare Workers configuration
+
+name = "wealthos-statement-parser"
+main = "index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Account
+account_id = "94592189ab0d8c6ccc57c825799fe0b3"
+
+# Routes
+[[routes]]
+pattern = "api.wealthos.app/parse/*"
+zone_name = "wealthos.app"
+
+# Environment Variables (set via: wrangler secret put OPENAI_API_KEY)
+[vars]
+ENVIRONMENT = "production"
+
+# R2 Bucket for statement storage
+[[r2_buckets]]
+binding = "WEALTHOS_BUCKET"
+bucket_name = "wealthos-statements"
+preview_bucket_name = "wealthos-statements-dev"
+
+# KV for caching auto-rules
+[[kv_namespaces]]
+binding = "AUTO_RULES_CACHE"
+id = "your-kv-namespace-id"
+preview_id = "your-kv-preview-id"
+
+# Limits
+[limits]
+cpu_ms = 30000
+
+# Development
+[dev]
+port = 8787
+local_protocol = "http"
